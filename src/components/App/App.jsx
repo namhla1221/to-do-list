@@ -3,10 +3,9 @@ import {v4 as createId } from 'uuid';
 import { HashRouter, Switch, Route, useParams } from 'react-router-dom';
 
 
-import Home from '../../views/Contact/Home';
 import Add from '../../views/Add/Add';
 import Edit from '../../views/Edit/Edit';
-import Contact from '../../views/Contact/Contact';
+
 
 const EditWrapper = (props) => {
     const { list, ...remainingProps } = props;
@@ -110,7 +109,7 @@ const handleEditItem = (taskId, name) => {
                     children ={ <EditWrapper list={list} onSave={handleEditItem}/>}
                      />
 
-                <Route path="/contact"><Contact onSave={handleFormSubmit}/></Route>
+               
 
                 <Route path="/add"><Add onSave={handleAddItem}/></Route>
 
