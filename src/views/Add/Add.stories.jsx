@@ -1,13 +1,11 @@
-import Add from './Add';
+import Add from "./Add";
 
 const config = {
-    title: 'Add',
-}
+  title: "Add",
+};
 
 export default config;
 
-const Default = () => <Add />
+const Default = () => <Add />;
 
-export{
-    Default
-}
+export { Default };

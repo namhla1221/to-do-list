@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {v4 as createId } from 'uuid'
-import { HashRouter, Switch, Route, useParams } from 'react-router-dom'
+import {v4 as createId } from 'uuid';
+import { HashRouter, Switch, Route, useParams } from 'react-router-dom';
 
-import Home from '../../views/Home/Home';
+
+import Home from '../../views/Contact/Home';
 import Add from '../../views/Add/Add';
 import Edit from '../../views/Edit/Edit';
+import Contact from '../../views/Contact/Contact';
 
 const EditWrapper = (props) => {
     const { list, ...remainingProps } = props;
@@ -12,6 +14,13 @@ const EditWrapper = (props) => {
     const { name } = list.find((item) => item.id === taskId)
 
     return <Edit {...remainingProps} taskId={taskId} initialName ={name}/>
+}
+
+const encode = (data) => {
+    return Object.keys(data)
+    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+    )
+    .join("&");
 }
 
 const App = () => {
@@ -49,6 +58,20 @@ const App = () => {
         setList([{id: createId(), name, checked: false }, ...list]);
         window.location.replace('#/')
     };
+
+    const handleFormSubmit = async (name, email, message) => {
+        await fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded"},
+            body: encoded({
+                "form-name": "contact",
+                name,
+                email,
+                message,
+            })
+        })
+
+    }
     
     const handleCheckToggle = (taskId) => {
         const newList = list.map((item) => {
@@ -82,13 +105,14 @@ const handleEditItem = (taskId, name) => {
     return (
         <HashRouter>
             <Switch>
-                <Route path="/edit/:taskId">
-                     <EditWrapper list={list} onSave={handleEditItem}/>
-                     </Route>
+                <Route 
+                path="/edit/:taskId"
+                    children ={ <EditWrapper list={list} onSave={handleEditItem}/>}
+                     />
 
-                <Route path="/add">
-                     <Add onSave={handleAddItem}/>
-                     </Route>
+                <Route path="/contact"><Contact onSave={handleFormSubmit}/></Route>
+
+                <Route path="/add"><Add onSave={handleAddItem}/></Route>
 
                 <Route path="/">
                     <Home 
